@@ -22,6 +22,12 @@ const allNotifications = [
   },
 ];
 
+const priorityOrder = {
+  Placement: 3,
+  Result: 2,
+  Event: 1,
+};
+
 function App() {
   const [filter, setFilter] = useState("All");
 
@@ -29,6 +35,10 @@ function App() {
     filter === "All"
       ? allNotifications
       : allNotifications.filter((item) => item.Type === filter);
+
+  const sortedNotifications = [...filteredNotifications].sort(
+    (a, b) => priorityOrder[b.Type] - priorityOrder[a.Type]
+  );
 
   return (
     <div className="container">
@@ -41,7 +51,7 @@ function App() {
         <option value="Event">Event</option>
       </select>
 
-      {filteredNotifications.map((item) => (
+      {sortedNotifications.map((item) => (
         <div key={item.ID} className="card">
           <h3>{item.Type}</h3>
           <p>{item.Message}</p>
